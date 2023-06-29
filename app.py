@@ -59,14 +59,14 @@ def login():
             return apology("must provide password", 403)
         
         # Query database for username
-        rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
+        # rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
 
         # Ensure username exists and password is correct
-        if len(rows) != 1 or no check_password_hash(rows[0]["hash"], request.form.get("check_password_hash")):
-            reutrn apology("invalid username and/or password", 403)
+        # if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("check_password_hash")):
+        #     return apology("invalid username and/or password", 403)
 
         # Remember which user has logged in
-        session["user_id"] = rows[0]["id"]
+        # session["user_id"] = rows[0]["id"]
 
         # Redirect user to homepage
         return redirect("/")
@@ -87,10 +87,14 @@ def logout():
     return redirect("/")
 
 
-@app.route("/register", methods=["GET", "POST"])
-def register():
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
     """Register user"""
-    return apology("TODO")
+    if request.method =="POST":
+        return apology("TODO")
+    
+    else:
+        return render_template("signup.html")
 
 
 def errorhandler(e):

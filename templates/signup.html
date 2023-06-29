@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Log in
+    Sign up
 {% endblock %}
 
 {% block main %}
@@ -9,10 +9,10 @@
     <div class="logo-container mt-4">
         <img src="/static/nightingale-logo.png" alt="" class="logo">
     </div>
-    <p class="fs-3 mx-auto text-center" style="width: 400px;">Nightingale Bowden bookings</p>
-    <div class="card w-50 mx-auto p-4 mt-4" style="width: 600px">
-        <p class="text-center fs-5">Log in to your account</p>
-        <form action="/login" method="post">
+    <p class="fs-3 mx-auto text-center">Nightingale Bowden bookings</p>
+    <div class="card w-50 mx-auto p-4 mt-3">
+        <p class="text-center fs-5">Create an account</p>
+        <form action="/signup" method="post">
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input type = "email" id="email" name="email" class="form-control">
@@ -21,9 +21,9 @@
                 <label for="password" class="form-label">Password</label>
                 <input type = "password" id="password" name="password" class="form-control">
             </div>
-            <button type="submit" class="btn btn-dark mb-3 mt-3">Log in</button>
+            <button type="submit" class="btn btn-dark mb-3 mt-3">Sign up</button>
         </form>
-        <p class="fw-light mt-3">Don't have an account? <a href="/signup">Sign up</a></p>
+        <p class="fw-light mt-3">Already have an account? <a href="/login">Log in</a></p>
     </div>
 </div>
 

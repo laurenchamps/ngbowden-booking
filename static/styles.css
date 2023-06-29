@@ -1,3 +1,27 @@
 * {
     box-sizing: border-box;
 }
+
+body {
+    font-family: 'Roboto', system-ui;
+    background-color: #fff;
+    color: #000;
+}
+
+.login {
+    border: 1px solid #5b5b5b;
+    border-radius: 5px;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.3);
+    padding: 1.2em;
+    min-width: 50vw;
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+
+.logo-container {
+    width: 100px;
+    margin: 0 auto;
+}
