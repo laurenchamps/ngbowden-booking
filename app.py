@@ -112,8 +112,7 @@ def signup():
             return apology("Enter your apartment number", 400)
 
         # Query database for email
-        emails = db.execute("SELECT * FROM users WHERE email = ?", request.form.get("email")
-        )
+        emails = db.execute("SELECT * FROM users WHERE email = ?", email)
 
         # Ensure username does not already exist
         if len(emails) > 0:
@@ -137,6 +136,9 @@ def signup():
         id = db.execute("SELECT id FROM users WHERE email = ?", email)
 
         print(id)
+
+        # Log user in *needs to be updated to index once built*
+        return render_template("login.html")
 
     else:
         return render_template("signup.html")
