@@ -11,10 +11,11 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import apology, login_required
 
 # Configure application
-app =  Flask(__name__)
+app = Flask(__name__)
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+
 
 # Ensure responses aren't cached
 @app.after_request
@@ -24,6 +25,7 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
+
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
@@ -31,7 +33,8 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
-# db = SQL("sqlite:///bookings.db")
+db = SQL("sqlite:///ngbowden.db")
+
 
 @app.route("/")
 @login_required
@@ -47,17 +50,16 @@ def login():
     # Forget any user_id
     session.clear()
 
-    #User reached route via POST (as by submitting a form via POST)
+    # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-
         # Ensure username was submitted
         if not request.form.get("username"):
             return apology("must provide username", 403)
-        
+
         # Ensure password was submitted
         elif not request.form.get("password"):
             return apology("must provide password", 403)
-        
+
         # Query database for username
         # rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
 
@@ -70,11 +72,11 @@ def login():
 
         # Redirect user to homepage
         return redirect("/")
-    
+
     # User reached route via GET (as by clicking a link or via a redirect)
     else:
         return render_template("login.html")
-    
+
 
 @app.route("/logout")
 def logout():
@@ -90,9 +92,52 @@ def logout():
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     """Register user"""
-    if request.method =="POST":
-        return apology("TODO")
-    
+    if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("password")
+        confirmation = request.form.get("password-confirmation")
+        firstname = request.form.get("first-name")
+        apartment = request.form.get("apartment")
+
+        # Ensure first name is entered
+        if not firstname:
+            return apology("Enter a name", 400)
+
+        # Ensure email is entered
+        if not email:
+            return apology("Enter an email", 400)
+
+        # Ensure apartment is entered
+        if not apartment:
+            return apology("Enter your apartment number", 400)
+
+        # Query database for email
+        emails = db.execute("SELECT * FROM users WHERE email = ?", request.form.get("email")
+        )
+
+        # Ensure username does not already exist
+        if len(emails) > 0:
+            return apology("Email address already in use", 400)
+
+        # Ensure password is entered
+        if not password:
+            return apology("Enter a password", 400)
+
+        # Ensure password and confirmation match
+        if password != confirmation:
+            return apology("Passwords do not match", 400)
+
+        # Add user to database
+        rows = db.execute("INSERT INTO users (email, firstname, apartment, hash) VALUES(?, ?, ?, ?)",
+            email,
+            firstname,
+            apartment,
+            generate_password_hash(password),
+        )
+        id = db.execute("SELECT id FROM users WHERE email = ?", email)
+
+        print(id)
+
     else:
         return render_template("signup.html")
 
