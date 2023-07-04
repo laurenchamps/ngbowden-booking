@@ -25,3 +25,11 @@ img {
     width: 100px;
     margin: 0 auto;
 }
+
+a {
+    text-decoration: none;
+}
+
+nav ul {
+    list-style-type: none;
+}
