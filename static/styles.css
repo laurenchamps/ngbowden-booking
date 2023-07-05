@@ -26,10 +26,6 @@ img {
     margin: 0 auto;
 }
 
-a {
-    text-decoration: none;
-}
-
-nav ul {
-    list-style-type: none;
+#logo {
+    transform: translateY(-2px); 
 }

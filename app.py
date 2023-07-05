@@ -40,7 +40,8 @@ db = SQL("sqlite:///ngbowden.db")
 @login_required
 def index():
     """Show current bookings"""
-    return render_template("index.html")
+    if session["user_id"]:
+        return render_template("index.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
