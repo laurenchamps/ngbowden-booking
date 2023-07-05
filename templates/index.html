@@ -7,6 +7,23 @@
 {% include "navigation.html" %}
 
 {% block main %}
-
+<div class="container">
+    <h1 class="mt-3">My Bookings</h1>
+    <div class="d-flex justify-content-end mt-3 mb-5">
+        <button class="btn btn-dark">Make booking</button>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Event</th>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col">Modify</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
 
 {% endblock %}
