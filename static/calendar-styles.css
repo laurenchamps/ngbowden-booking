@@ -9,3 +9,16 @@ body {
     background-color: #fff;
     color: #000;
 }
+
+#calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 100px);
+}
+
+.header-cell {
+    border: 1px solid black;
+}
+
+.day {
+    border: 1px solid black;
+}
