@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block js %}
+    <script src="../static/calendar.js" defer></script>
+{% endblock %}
+
+{% block calendarcss %} 
+    <link rel="stylesheet" href="../static/calendar-styles.css" class="css">
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <div class="button-group">
+        <button class="navigation" id="previous-month">&lt;</button>
+        <button class="navigation" id="next-month">&gt;</button>
+    </div>
+    <div class="header">
+        <h1 id="month"></h1>
+    </div>
+    <div id="calendar"></div>
+</div>
+{% endblock %}

@@ -44,6 +44,15 @@ def index():
         return render_template("index.html")
 
 
+@app.route("/book")
+# @login_required
+def book():
+    """Test ability to retrieve data from DB and use in JS"""
+
+    return render_template("book.html")
+
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """Log user in"""
