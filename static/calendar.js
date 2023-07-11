@@ -34,7 +34,7 @@ function drawBlankCalendar() {
 
         const dayName = document.createElement('p');
         dayName.classList.add('day-name');
-        dayName.innerText = days[i];
+        dayName.textContent = days[i];
 
         headerCell.appendChild(dayName);
 
@@ -63,7 +63,7 @@ function drawBlankCalendar() {
 function updateCalendar(month, year) {
     // Display month and year on calendar
     const monthWithYear = `${months[month]} ${year}`;
-    title.innerText = monthWithYear;
+    title.textContent = monthWithYear;
 
     // Set the first day of the month
     const theFirst = new Date();
@@ -87,11 +87,11 @@ function updateCalendar(month, year) {
         const dayNumber = day.querySelector('.day-number');
 
         // Reset to blank
-        dayNumber.innerText = '';
+        dayNumber.textContent = '';
         
         // Add each day of month to calendar
         if (i >= firstDayOfMonth && dayCounter <= daysInMonth) {
-            dayNumber.innerText = dayCounter;
+            dayNumber.textContent = dayCounter;
             dayCounter++;
         }
     } 
@@ -125,3 +125,12 @@ updateCalendar(6, 2023);
 // Event listeners
 previousMonth.addEventListener("click", getPreviousMonth);
 nextMonth.addEventListener("click", getNextMonth);
+
+// Example fetch API request
+// fetch('~~ add URL ~~')
+//     .then((response) => {
+//         return response.json();
+//     })
+//     .then((data) => {
+//         console.log(data);
+//     });

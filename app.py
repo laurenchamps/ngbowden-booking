@@ -2,11 +2,12 @@
 import os """
 
 from cs50 import SQL
-from flask import Flask, flash, redirect, render_template, request, session
+from flask import Flask, flash, redirect, render_template, request, session, jsonify
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
+import json
 
 from helpers import apology, login_required
 
@@ -48,9 +49,13 @@ def index():
 # @login_required
 def book():
     """Test ability to retrieve data from DB and use in JS"""
+    events = db.execute("SELECT event_name, start_date, start_time, end_time, firstname, apartment FROM events JOIN users ON users.id = events.user_id")
 
-    return render_template("book.html")
+    return render_template("book.html", event_data=events)
 
+@app.route("/book/make-booking", methods=["POST"])
+def make_booking():
+    return 'Thanks'
 
 
 @app.route("/login", methods=["GET", "POST"])
