@@ -41,9 +41,10 @@ db = SQL("sqlite:///ngbowden.db")
 @app.route("/")
 @login_required
 def index():
-    """TODO Show current bookings"""
+    """Show current bookings"""
+    bookings = db.execute("SELECT * FROM events WHERE user_id=?", session["user_id"])
 
-    return render_template("index.html")
+    return render_template("index.html", bookings=bookings)
 
 
 @app.route("/book", methods=["GET", "POST"])
