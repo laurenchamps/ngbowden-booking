@@ -10,24 +10,26 @@
 
 {% block main %}
 <div class="container">
+    <p>{{ error }}</p>
     <div class="mb-3">
         <div class="form-group">
             <label for="event-name">Event name</label>
-            <input type="text" class="form-control" id="event-name" placeholder="Enter event name">
+            <input type="text" name="event-name" class="form-control" id="event-name" placeholder="Enter event name">
         </div>
         <div class="form-group">
             <label for="date">Date</label>
-            <input type="date" class="form-control" id="date">
+            <input type="date" name="date" class="form-control" id="date">
         </div>
         <div class="form-group">
             <label for="start-time">Start time</label>
-            <input type="time" class="form-control" id="start-time">
+            <input type="time" name="start-time" class="form-control" id="start-time">
         </div>
         <div class="form-group">
             <label for="end-time">End time</label>
-            <input type="time" class="form-control" id="end-time">
+            <input type="time" name="end-time" class="form-control" id="end-time">
         </div>
     </div>
+        <button class="btn btn-dark mb-3" onclick="make_booking()">Book</button>
 </div>
 
 

@@ -2,7 +2,8 @@
 import os """
 
 from cs50 import SQL
-from flask import Flask, flash, redirect, render_template, request, session, jsonify
+from datetime import datetime
+from flask import Flask, flash, redirect, render_template, request, session, jsonify, make_response
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
@@ -40,22 +41,66 @@ db = SQL("sqlite:///ngbowden.db")
 @app.route("/")
 @login_required
 def index():
-    """Show current bookings"""
-    if session["user_id"]:
-        return render_template("index.html")
+    """TODO Show current bookings"""
+
+    return render_template("index.html")
 
 
-@app.route("/book")
-# @login_required
+@app.route("/book", methods=["GET", "POST"])
+@login_required
 def book():
-    """Test ability to retrieve data from DB and use in JS"""
-    events = db.execute("SELECT event_name, start_date, start_time, end_time, firstname, apartment FROM events JOIN users ON users.id = events.user_id")
+    if request.method == "POST":
 
-    return render_template("book.html", event_data=events)
+        form_data = request.get_json()
+        event_name = form_data["eventName"]
+        date = form_data["date"]
+        start_time = form_data["startTime"]
+        end_time = form_data["endTime"]
 
-@app.route("/book/make-booking", methods=["POST"])
-def make_booking():
-    return 'Thanks'
+        # Query database for an existing booking
+        existing_bookings = db.execute("SELECT * FROM events WHERE start_date = ? AND ((start_time >= ? AND start_time < ?) OR (end_time > ? AND end_time <= ?))", date, start_time, end_time, start_time, end_time)
+
+        if len(existing_bookings) > 0:
+            print("there is a clash")
+            res = make_response(jsonify({"message": "Booking time unavailable"}), 400)
+            return res
+        
+        if not event_name or not date or not start_time or not end_time:
+            print("blank fields")
+            res = make_response(jsonify({"message": "Missing information"}), 400)
+            return res
+        
+        # Add event to database
+        rows = db.execute("INSERT INTO events (user_id, event_name, start_date, start_time, end_time) VALUES(?, ?, ?, ?, ?)",
+            session["user_id"],
+            event_name,
+            date,
+            start_time,
+            end_time
+        )
+
+        res = make_response(jsonify({"message": "Event added"}), 200)
+
+        return res
+   
+    else:
+        """Test ability to retrieve data from DB and use in JS"""
+        events = db.execute("SELECT event_name, start_date, start_time, end_time, firstname, apartment FROM events JOIN users ON users.id = events.user_id")
+
+        return render_template("book.html")
+
+
+# @app.route("/book/make-booking", methods=["POST"])
+# # @login_required
+# def make_booking():
+#     req = request.get_json()
+
+#     # Query database for an existing booking
+#     # current_bookings = db.execute("SELECT * FROM events WHERE start_date = ?", date)
+
+#     res = make_response(jsonify({"message": "JSON received"}), 200)
+
+#     return res
 
 
 @app.route("/login", methods=["GET", "POST"])

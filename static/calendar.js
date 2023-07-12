@@ -122,6 +122,30 @@ function getNextMonth() {
 drawBlankCalendar();
 updateCalendar(6, 2023);
 
+function make_booking() {
+    const eventName = document.getElementById('event-name');
+    const date = document.getElementById('date');
+    const startTime = document.getElementById('start-time');
+    const endTime = document.getElementById('end-time');
+
+    const booking = {
+        eventName: eventName.value,
+        date: date.value,
+        startTime: startTime.value,
+        endTime: endTime.value,
+    };
+
+    fetch(`${window.origin}/book`, {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(booking),
+        cache: "no-cache",
+        headers: new Headers({
+            "content-type": "application/json"
+        })
+    })
+}
+
 // Event listeners
 previousMonth.addEventListener("click", getPreviousMonth);
 nextMonth.addEventListener("click", getNextMonth);
