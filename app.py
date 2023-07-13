@@ -91,7 +91,7 @@ def make_booking():
     
     else:
 
-        events = db.execute("SELECT event_name, date, start_time, end_time, firstname, apartment FROM events JOIN users ON users.id = events.user_id")
+        events = db.execute("SELECT event_name, date, start_time, end_time, firstname, apartment FROM events JOIN users ON users.id = events.user_id ORDER BY start_time")
 
         res = make_response(jsonify(events), 200)
 
