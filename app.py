@@ -47,12 +47,19 @@ def index():
     return render_template("index.html", bookings=bookings)
 
 
-@app.route("/book", methods=["GET", "POST"])
+@app.route("/book")
 @login_required
 def book():
-    if request.method == "POST":
+    return render_template("book.html")
 
+
+@app.route("/book/make-booking", methods=["GET", "POST"])
+@login_required
+def make_booking():
+
+    if request.method == "POST":
         form_data = request.get_json()
+
         event_name = form_data["eventName"]
         date = form_data["date"]
         start_time = form_data["startTime"]
@@ -80,28 +87,15 @@ def book():
             end_time
         )
 
-        res = make_response(jsonify({"message": "Event added"}), 200)
-
-        return res
-   
+        return make_response(jsonify({"message": "Booking successful"}), 200)
+    
     else:
-        """Test ability to retrieve data from DB and use in JS"""
+
         events = db.execute("SELECT event_name, start_date, start_time, end_time, firstname, apartment FROM events JOIN users ON users.id = events.user_id")
 
-        return render_template("book.html")
+        res = make_response(jsonify(events), 200)
 
-
-# @app.route("/book/make-booking", methods=["POST"])
-# # @login_required
-# def make_booking():
-#     req = request.get_json()
-
-#     # Query database for an existing booking
-#     # current_bookings = db.execute("SELECT * FROM events WHERE start_date = ?", date)
-
-#     res = make_response(jsonify({"message": "JSON received"}), 200)
-
-#     return res
+        return res
 
 
 @app.route("/login", methods=["GET", "POST"])

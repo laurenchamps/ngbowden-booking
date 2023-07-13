@@ -64,6 +64,7 @@ function updateCalendar(month, year) {
     // Display month and year on calendar
     const monthWithYear = `${months[month]} ${year}`;
     title.textContent = monthWithYear;
+    const calendarMonth = String(month + 1).padStart(2, '0');
 
     // Set the first day of the month
     const theFirst = new Date();
@@ -78,7 +79,7 @@ function updateCalendar(month, year) {
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
     // Populate calendar with numbers for each day
-    dayElements = calendar.querySelectorAll('.day');
+    const dayElements = calendar.querySelectorAll('.day');
 
     let dayCounter = 1;
 
@@ -88,13 +89,19 @@ function updateCalendar(month, year) {
 
         // Reset to blank
         dayNumber.textContent = '';
+        day.setAttribute("id", "");
         
         // Add each day of month to calendar
         if (i >= firstDayOfMonth && dayCounter <= daysInMonth) {
+            let formattedCounter = String(dayCounter).padStart(2, '0');
             dayNumber.textContent = dayCounter;
+            let fullYear = `${year}-${calendarMonth}-${formattedCounter}`;
+            day.setAttribute("id", fullYear);
             dayCounter++;
         }
     } 
+
+    getEvents();
 }
 
 function getPreviousMonth() {
@@ -119,8 +126,37 @@ function getNextMonth() {
     updateCalendar(currentMonth, currentYear);
 }
 
+function getEvents() {
+    
+    fetch(`${window.origin}/book/make-booking`)
+    .then(function (response) {
+        return response.json();
+    }).then(function (object) {
+        const dayElements = document.querySelectorAll('.day');
+
+        // For each day in calendar
+        for (let i = 0; i < dayElements.length; i++) {
+            
+            // Check for an event on the corresponding date and add event details to calendar
+            for (let j = 0; j < object.length; j++) {
+                if (object[j].start_date == dayElements[i].id) {
+                    console.log(`There's an event today: ${object[j].start_date}`);
+                    myEvent = document.createElement('p');
+                    myEvent.classList.add('event');
+
+                    myEvent.innerHTML = `${object[j].event_name}</br>${object[j].firstname}(${object[j].apartment})</br>${object[j].start_time} - ${object[j].end_time}`;
+                    dayElements[i].appendChild(myEvent);
+                }
+            }
+        }
+        return object;
+    });
+}
+
+
 drawBlankCalendar();
 updateCalendar(6, 2023);
+
 
 function make_booking() {
     const eventName = document.getElementById('event-name');
@@ -135,7 +171,7 @@ function make_booking() {
         endTime: endTime.value,
     };
 
-    fetch(`${window.origin}/book`, {
+    fetch(`${window.origin}/book/make-booking`, {
         method: "POST",
         credentials: "include",
         body: JSON.stringify(booking),
