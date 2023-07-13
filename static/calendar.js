@@ -49,11 +49,7 @@ function drawBlankCalendar() {
         const dayNumber = document.createElement('p');
         dayNumber.classList.add('day-number');
 
-        const event = document.createElement('p');
-        event.classList.add('event');
-
         day.appendChild(dayNumber);
-        day.appendChild(event);
 
         calendar.appendChild(day);
     }
@@ -147,7 +143,7 @@ function getEvents() {
                 if (object[j].date == dayElements[i].id) {
                     myEvent = document.createElement('p');
                     myEvent.classList.add('event');
-                    myEvent.innerHTML = `${object[j].event_name}</br>${object[j].firstname}(${object[j].apartment})</br>${object[j].start_time} - ${object[j].end_time}`;
+                    myEvent.innerHTML = `${object[j].firstname}(${object[j].apartment})</br>${object[j].start_time} - ${object[j].end_time}`;
                     dayElements[i].appendChild(myEvent);
                 }
             }

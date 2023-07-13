@@ -8,39 +8,51 @@
     <link rel="stylesheet" href="../static/calendar-styles.css" class="css">
 {% endblock %}
 
+{% block title %}
+    Make a booking
+{% endblock %}
+
+{% include "navigation.html" %}
+
 {% block main %}
 <div class="container">
-    <p>{{ error }}</p>
-    <div class="mb-3">
-        <div class="form-group">
-            <label for="event-name">Event name</label>
-            <input type="text" name="event-name" class="form-control" id="event-name" placeholder="Enter event name">
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="container px-2 me-5">
+            <h1 class="mb-5">Make a booking</h1>
+            <div class="mb-3 align-self-start">
+                <div class="form-group mb-3">
+                    <label for="event-name">Event name</label>
+                    <input type="text" name="event-name" class="form-control" id="event-name" placeholder="Enter event name">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="date">Date</label>
+                    <input type="date" name="date" class="form-control" id="date">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="start-time">Start time</label>
+                    <input type="time" name="start-time" class="form-control" id="start-time">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="end-time">End time</label>
+                    <input type="time" name="end-time" class="form-control" id="end-time">
+                </div>
+            </div>
+                <button class="btn btn-dark mb-3" onclick="make_booking()">Book</button>
         </div>
-        <div class="form-group">
-            <label for="date">Date</label>
-            <input type="date" name="date" class="form-control" id="date">
-        </div>
-        <div class="form-group">
-            <label for="start-time">Start time</label>
-            <input type="time" name="start-time" class="form-control" id="start-time">
-        </div>
-        <div class="form-group">
-            <label for="end-time">End time</label>
-            <input type="time" name="end-time" class="form-control" id="end-time">
-        </div>
-    </div>
-        <button class="btn btn-dark mb-3" onclick="make_booking()">Book</button>
-</div>
 
 
-<div class="container">
-    <div class="button-group">
-        <button class="navigation" id="previous-month">&lt;</button>
-        <button class="navigation" id="next-month">&gt;</button>
+        <div class="container px-2 mt-3">
+            <div class="d-flex justify-content-between container">
+                <div class="header mb-3">
+                    <h1 id="month-year"></h1>
+                </div>
+                <div class="button-group align-self-center">
+                    <button class="navigation" id="previous-month">&lt;</button>
+                    <button class="navigation" id="next-month">&gt;</button>
+                </div>
+            </div>
+            <div id="calendar"></div>
+        </div>
     </div>
-    <div class="header">
-        <h1 id="month-year"></h1>
-    </div>
-    <div id="calendar"></div>
 </div>
 {% endblock %}

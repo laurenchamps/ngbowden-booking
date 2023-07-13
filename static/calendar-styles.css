@@ -16,9 +16,45 @@ body {
 }
 
 .header-cell {
-    border: 1px solid black;
+    border-bottom: 1px solid black;
+    padding-top: 0.4em;
+    margin: 0;
 }
 
 .day {
     border: 1px solid black;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    min-height: 75px;
 }
+
+.day-number {
+    padding: 0.4em 0 0 0.4em;
+    margin: 0;
+}
+
+.day-name {
+    margin: 0.2em;
+}
+
+.event {
+    background-color: #c7e7d8;
+    color: #000;
+    border-radius: 5px; 
+    margin: 0.2rem;
+    padding: 0.2rem;
+    font-size: 0.8rem;
+}
+
+.navigation {
+    border: none;
+    background-color: #fff;
+    font-size: 1.6rem;
+}
+
+/* .btn {
+    background-color: #aed7c4;
+    color: #000;
+    border: none;
+} */
