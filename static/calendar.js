@@ -65,6 +65,7 @@ function updateCalendar(month, year) {
     const monthWithYear = `${months[month]} ${year}`;
     title.textContent = monthWithYear;
     const calendarMonth = String(month + 1).padStart(2, '0');
+    let events = document.querySelectorAll('.event');
 
     // Set the first day of the month
     const theFirst = new Date();
@@ -90,6 +91,9 @@ function updateCalendar(month, year) {
         // Reset to blank
         dayNumber.textContent = '';
         day.setAttribute("id", "");
+        events.forEach((event) => {
+            event.remove();
+        })
         
         // Add each day of month to calendar
         if (i >= firstDayOfMonth && dayCounter <= daysInMonth) {
@@ -136,14 +140,13 @@ function getEvents() {
 
         // For each day in calendar
         for (let i = 0; i < dayElements.length; i++) {
-            
+
             // Check for an event on the corresponding date and add event details to calendar
             for (let j = 0; j < object.length; j++) {
-                if (object[j].start_date == dayElements[i].id) {
-                    console.log(`There's an event today: ${object[j].start_date}`);
+                
+                if (object[j].date == dayElements[i].id) {
                     myEvent = document.createElement('p');
                     myEvent.classList.add('event');
-
                     myEvent.innerHTML = `${object[j].event_name}</br>${object[j].firstname}(${object[j].apartment})</br>${object[j].start_time} - ${object[j].end_time}`;
                     dayElements[i].appendChild(myEvent);
                 }

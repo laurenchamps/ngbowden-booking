@@ -66,7 +66,7 @@ def make_booking():
         end_time = form_data["endTime"]
 
         # Query database for an existing booking
-        existing_bookings = db.execute("SELECT * FROM events WHERE start_date = ? AND ((start_time >= ? AND start_time < ?) OR (end_time > ? AND end_time <= ?))", date, start_time, end_time, start_time, end_time)
+        existing_bookings = db.execute("SELECT * FROM events WHERE date = ? AND ((start_time >= ? AND start_time < ?) OR (end_time > ? AND end_time <= ?))", date, start_time, end_time, start_time, end_time)
 
         if len(existing_bookings) > 0:
             print("there is a clash")
@@ -79,7 +79,7 @@ def make_booking():
             return res
         
         # Add event to database
-        rows = db.execute("INSERT INTO events (user_id, event_name, start_date, start_time, end_time) VALUES(?, ?, ?, ?, ?)",
+        rows = db.execute("INSERT INTO events (user_id, event_name, date, start_time, end_time) VALUES(?, ?, ?, ?, ?)",
             session["user_id"],
             event_name,
             date,
@@ -91,7 +91,7 @@ def make_booking():
     
     else:
 
-        events = db.execute("SELECT event_name, start_date, start_time, end_time, firstname, apartment FROM events JOIN users ON users.id = events.user_id")
+        events = db.execute("SELECT event_name, date, start_time, end_time, firstname, apartment FROM events JOIN users ON users.id = events.user_id")
 
         res = make_response(jsonify(events), 200)
 
