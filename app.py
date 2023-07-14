@@ -50,33 +50,34 @@ def index():
 @app.route("/book")
 @login_required
 def book():
-    return render_template("book.html")
+        return render_template("book.html")
 
 
 @app.route("/book/make-booking", methods=["GET", "POST"])
 @login_required
 def make_booking():
-
     if request.method == "POST":
         form_data = request.get_json()
+        print(form_data)
 
-        event_name = form_data["eventName"]
+        event_name = form_data["event_name"]
         date = form_data["date"]
-        start_time = form_data["startTime"]
-        end_time = form_data["endTime"]
+        start_time = form_data["start_time"]
+        end_time = form_data["end_time"]
 
         # Query database for an existing booking
         existing_bookings = db.execute("SELECT * FROM events WHERE date = ? AND ((start_time >= ? AND start_time < ?) OR (end_time > ? AND end_time <= ?))", date, start_time, end_time, start_time, end_time)
 
+        print(existing_bookings)
+
+        # Return error if there is an existing booking at that time
         if len(existing_bookings) > 0:
-            print("there is a clash")
-            res = make_response(jsonify({"message": "Booking time unavailable"}), 400)
-            return res
-        
+            return jsonify({"message": "Existing booking"}, 403)
+
+        # Return error if any of the form fields are incomplete
         if not event_name or not date or not start_time or not end_time:
-            print("blank fields")
-            res = make_response(jsonify({"message": "Missing information"}), 400)
-            return res
+            return jsonify({"message": "Incomplete form fields"}, 400)
+        
         
         # Add event to database
         rows = db.execute("INSERT INTO events (user_id, event_name, date, start_time, end_time) VALUES(?, ?, ?, ?, ?)",
@@ -87,15 +88,20 @@ def make_booking():
             end_time
         )
 
-        return make_response(jsonify({"message": "Booking successful"}), 200)
+        response = jsonify({"message": "Booking successful"}, 200)
+        return response
     
     else:
+        events = db.execute("SELECT events.id, event_name, date, start_time, end_time, firstname, apartment FROM events JOIN users ON users.id = events.user_id ORDER BY start_time")
 
-        events = db.execute("SELECT event_name, date, start_time, end_time, firstname, apartment FROM events JOIN users ON users.id = events.user_id ORDER BY start_time")
+        response = make_response(jsonify(events), 200)
 
-        res = make_response(jsonify(events), 200)
+        return response
 
-        return res
+
+
+
+   
 
 
 @app.route("/login", methods=["GET", "POST"])
