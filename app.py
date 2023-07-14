@@ -2,7 +2,7 @@
 import os """
 
 from cs50 import SQL
-from datetime import datetime
+from datetime import datetime, date
 from flask import Flask, flash, redirect, render_template, request, session, jsonify, make_response
 from flask_session import Session
 from tempfile import mkdtemp
@@ -50,12 +50,13 @@ def index():
 @app.route("/book")
 @login_required
 def book():
-        return render_template("book.html")
+    return render_template("book.html")
 
 
 @app.route("/book/make-booking", methods=["GET", "POST"])
 @login_required
 def make_booking():
+
     if request.method == "POST":
         form_data = request.get_json()
         print(form_data)
@@ -68,7 +69,13 @@ def make_booking():
         # Query database for an existing booking
         existing_bookings = db.execute("SELECT * FROM events WHERE date = ? AND ((start_time >= ? AND start_time < ?) OR (end_time > ? AND end_time <= ?))", date, start_time, end_time, start_time, end_time)
 
-        print(existing_bookings)
+        # Ensure date and start time is not in the past
+        date_time = date + ' ' + start_time
+        date_obj = datetime.strptime(date_time, '%Y-%m-%d %H:%M')
+
+        if date_obj < datetime.now():
+            return jsonify({"message": "Your booking occurs in the past. Please select a future date and time"}, 400)
+        
 
         # Return error if there is an existing booking at that time
         if len(existing_bookings) > 0:

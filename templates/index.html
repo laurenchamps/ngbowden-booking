@@ -25,7 +25,7 @@
             {% for row in bookings %}
             <tr>
                 <td> {{ row["event_name"] }} </td>
-                <td> {{ row["start_date"] }} </td>
+                <td> {{ row["date"] }} </td>
                 <td> {{ row["start_time"] }} - {{ row["end_time"] }} </td>
                 <td class="text-end">
                     <a class="btn btn-primary" href="#">Edit</a>
