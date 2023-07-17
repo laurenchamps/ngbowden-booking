@@ -37,20 +37,27 @@ Session(app)
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///ngbowden.db")
 
+# Get all future bookings for all users
+allBookings = db.execute("SELECT * FROM events JOIN users ON users.id = events.user_id WHERE date > datetime('now') ORDER BY date, start_time")
 
 @app.route("/")
 @login_required
 def index():
-    """Show current bookings"""
-    bookings = db.execute("SELECT * FROM events WHERE user_id=?", session["user_id"])
+    """Show user's current bookings"""
+    myBookings = db.execute("SELECT * FROM events WHERE user_id=?", session["user_id"])
 
-    return render_template("index.html", bookings=bookings)
+    return render_template("index.html", bookings=myBookings)
 
 
 @app.route("/book")
 @login_required
 def book():
     return render_template("book.html")
+
+
+@app.route("/bookings")
+def bookings():
+    return render_template("bookings.html", bookings=allBookings)
 
 
 @app.route("/book/make-booking", methods=["GET", "POST"])

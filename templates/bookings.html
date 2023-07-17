@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Bookings
+{% endblock %}
+
+{% include "navigation.html" %}
+
+{% block main %}
+<div class="container">
+    <h1 class="mt-3">All Bookings</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Event</th>
+                <th scope="col">Booked by</th>
+                <th scope="col">Apartment</th>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in bookings %}
+            <tr>
+                <td> {{ row["event_name"] }} </td>
+                <td> {{ row["firstname"] }} - {{ row ["email"] }} </td>
+                <td> {{ row["apartment"] }} </td>
+                <td> {{ row["date"] }} </td>
+                <td> {{ row["start_time"] }} - {{ row["end_time"] }} </td>
+                <td class="text-end">
+                    <a class="btn btn-primary" href="#">Edit</a>
+                    <a class="btn btn-danger" href="#">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
