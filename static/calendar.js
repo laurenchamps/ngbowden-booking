@@ -2,7 +2,9 @@ const calendar = document.getElementById('calendar');
 const title = document.getElementById('month-year');
 const previousMonth = document.getElementById('previous-month');
 const nextMonth = document.getElementById('next-month');
-
+// const errorModal = document.getElementById('errorModal');
+const errorModal = new bootstrap.Modal('#errorModal');
+const modalTitle = document.getElementById('errorModalLabel');
 
 const months = [
     'January',
@@ -178,15 +180,20 @@ function createEvent(e) {
             "Content-Type": "application/json"
         }
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data[1] != 200) {
-            console.log(data[1]);
-        } else {
+    .then((response) => {
+        if (response.ok) {
+            return response.json()
+        }
+        return response.json().then(data => {throw new Error(data.message)})
+    })
+    .then((data) => { 
             console.log(data[0].message);
             addEventToDOM(data);
             location.reload();
-        }
+    })
+    .catch((error) => {
+        modalTitle.textContent = `${error}`;
+        errorModal.show();
     });
 }
 
@@ -208,3 +215,4 @@ init();
 // Event listeners
 previousMonth.addEventListener("click", getPreviousMonth);
 nextMonth.addEventListener("click", getNextMonth);
+

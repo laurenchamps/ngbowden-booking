@@ -59,13 +59,17 @@ def make_booking():
 
     if request.method == "POST":
         form_data = request.get_json()
-        print(form_data)
 
         event_name = form_data["event_name"]
         date = form_data["date"]
         start_time = form_data["start_time"]
         end_time = form_data["end_time"]
 
+        # Return error if any of the form fields are incomplete
+        if not event_name or not date or not start_time or not end_time:
+            response = make_response({"message": "Incomplete fields"}, 400)
+            return response
+        
         # Query database for an existing booking
         existing_bookings = db.execute("SELECT * FROM events WHERE date = ? AND ((start_time >= ? AND start_time < ?) OR (end_time > ? AND end_time <= ?))", date, start_time, end_time, start_time, end_time)
 
@@ -74,17 +78,13 @@ def make_booking():
         date_obj = datetime.strptime(date_time, '%Y-%m-%d %H:%M')
 
         if date_obj < datetime.now():
-            return jsonify({"message": "Your booking occurs in the past. Please select a future date and time"}, 400)
-        
+            response = make_response({"message": "Your booking occurs in the past"}, 400)
+            return response       
 
         # Return error if there is an existing booking at that time
         if len(existing_bookings) > 0:
-            return jsonify({"message": "Existing booking"}, 403)
-
-        # Return error if any of the form fields are incomplete
-        if not event_name or not date or not start_time or not end_time:
-            return jsonify({"message": "Incomplete form fields"}, 400)
-        
+            response = make_response({"message": "The booking time you have selected is unavailable"}, 403)
+            return response
         
         # Add event to database
         rows = db.execute("INSERT INTO events (user_id, event_name, date, start_time, end_time) VALUES(?, ?, ?, ?, ?)",
@@ -95,7 +95,7 @@ def make_booking():
             end_time
         )
 
-        response = jsonify({"message": "Booking successful"}, 200)
+        response = make_response({"message": "Booking successful"}, 200)
         return response
     
     else:
