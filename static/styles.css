@@ -29,3 +29,13 @@ img {
 #logo {
     transform: translateY(-2px); 
 }
+
+.user-initial {
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    display: inline-block;
+    background-color: #cce6da;
+    text-align: center;
+    padding-top: 1px;
+}

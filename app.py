@@ -44,26 +44,34 @@ def index():
     """Show user's current bookings"""
     myBookings = db.execute("SELECT * FROM events WHERE user_id=? AND date > datetime('now') ORDER BY date, start_time", session["user_id"])
 
-    return render_template("index.html", bookings=myBookings)
+    # Get user's initial to display in navigation
+    user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
+    name = user[0]["firstname"]
+    initial = name[0]
+    admin = user[0]["is_admin"]
+
+    return render_template("index.html", bookings=myBookings, name=initial, admin=admin)
 
 
 @app.route("/book")
 @login_required
 def book():
-    return render_template("book.html")
+    # Get user's initial to display in navigation
+    user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
+    name = user[0]["firstname"]
+    initial = name[0]
+
+    return render_template("book.html", name=initial)
 
 
 @app.route("/bookings")
 @login_required
 def bookings():
 
-    # Determine if user is admin
+    # Provide access to page if user is admin
     user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
 
-    print(user[0]["is_admin"])
-
     if user[0]["is_admin"] == 1:
-
         # Get all future bookings for all users
         allBookings = db.execute("SELECT * FROM users JOIN events ON users.id = events.user_id WHERE date > datetime('now') ORDER BY date, start_time")
 

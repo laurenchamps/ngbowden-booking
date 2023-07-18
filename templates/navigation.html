@@ -14,16 +14,16 @@
             {% if session["user_id"] %}
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a href="/" class="nav-link active">home</a>
+                        <a href="/" class="nav-link active">Home</a>
                     </li>
                     <li class="nav-item me-5">
-                        <a href="#" class="nav-link">check availability</a>
+                        <a href="/book" class="nav-link">Make a booking</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">my account</a>
+                        <a href="/logout" class="nav-link">Log out</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">log out</a>
+                        <a href="#" class="nav-link"><div class="user-initial">{{ name }}</div></a>
                     </li>
                 </ul>
             {% endif %}

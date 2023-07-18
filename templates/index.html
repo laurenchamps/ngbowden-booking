@@ -10,6 +10,9 @@
 <div class="container">
     <h1 class="mt-3">My Bookings</h1>
     <div class="d-flex justify-content-end mt-3 mb-5">
+        {% if admin %}
+        <a href="/bookings" class="btn btn-dark me-2">Manage all bookings</a>
+        {% endif %}
         <a href="/book" class="btn btn-dark">Make booking</a>
     </div>
     <table class="table">
