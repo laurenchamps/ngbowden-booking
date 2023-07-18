@@ -37,8 +37,6 @@ Session(app)
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///ngbowden.db")
 
-# Get all future bookings for all users
-allBookings = db.execute("SELECT * FROM events JOIN users ON users.id = events.user_id WHERE date > datetime('now') ORDER BY date, start_time")
 
 @app.route("/")
 @login_required
@@ -57,6 +55,9 @@ def book():
 
 @app.route("/bookings")
 def bookings():
+    # Get all future bookings for all users
+    allBookings = db.execute("SELECT * FROM users JOIN events ON users.id = events.user_id WHERE date > datetime('now') ORDER BY date, start_time")
+    
     return render_template("bookings.html", bookings=allBookings)
 
 
@@ -113,9 +114,15 @@ def make_booking():
         return response
 
 
+@app.route("/delete", methods=["POST"])
+@login_required
+def delete():
 
-
-   
+    # Remove booking
+    id = request.form.get("id")
+    if id:
+        db.execute("DELETE FROM events WHERE id = ?", id)
+    return redirect("/bookings")
 
 
 @app.route("/login", methods=["GET", "POST"])
