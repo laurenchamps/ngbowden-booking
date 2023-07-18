@@ -29,13 +29,13 @@
                 <td> {{ row.date }} </td>
                 <td> {{ row.start_time }} - {{ row.end_time }} </td>
                 <td class="text-end">
-                    <form id="deleteForm" action="/delete" method="post">
+                    <form id="adminDeleteForm" action="/admin-delete" method="post">
                         <input name="id" type="hidden" value="{{ row.id }}">
                         <!-- Button to trigger modal -->
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#adminDeleteModal">Delete</button>
 
                         <!-- Modal -->
-                        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="adminDeleteModal" tabindex="-1" aria-labelledby="adminDeleteModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">

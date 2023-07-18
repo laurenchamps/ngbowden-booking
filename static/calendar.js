@@ -187,7 +187,6 @@ function createEvent(e) {
         return response.json().then(data => {throw new Error(data.message)})
     })
     .then((data) => { 
-            console.log(data[0].message);
             addEventToDOM(data);
             location.reload();
     })

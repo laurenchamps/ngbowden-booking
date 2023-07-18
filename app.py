@@ -42,7 +42,7 @@ db = SQL("sqlite:///ngbowden.db")
 @login_required
 def index():
     """Show user's current bookings"""
-    myBookings = db.execute("SELECT * FROM events WHERE user_id=?", session["user_id"])
+    myBookings = db.execute("SELECT * FROM events WHERE user_id=? AND date > datetime('now') ORDER BY date, start_time", session["user_id"])
 
     return render_template("index.html", bookings=myBookings)
 
@@ -54,10 +54,15 @@ def book():
 
 
 @app.route("/bookings")
+@login_required
 def bookings():
+
     # Get all future bookings for all users
     allBookings = db.execute("SELECT * FROM users JOIN events ON users.id = events.user_id WHERE date > datetime('now') ORDER BY date, start_time")
-    
+
+    if len(allBookings) < 1:
+        return render_template("bookings.html")
+
     return render_template("bookings.html", bookings=allBookings)
 
 
@@ -114,15 +119,26 @@ def make_booking():
         return response
 
 
-@app.route("/delete", methods=["POST"])
+@app.route("/admin-delete", methods=["POST"])
 @login_required
-def delete():
+def admin_delete():
 
     # Remove booking
     id = request.form.get("id")
     if id:
         db.execute("DELETE FROM events WHERE id = ?", id)
     return redirect("/bookings")
+
+
+@app.route("/user-delete", methods=["POST"])
+@login_required
+def user_delete():
+
+    # Remove booking
+    id = request.form.get("id")
+    if id:
+        db.execute("DELETE FROM events WHERE id = ?", id)
+    return redirect("/")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -216,12 +232,14 @@ def signup():
             apartment,
             generate_password_hash(password),
         )
-        id = db.execute("SELECT id FROM users WHERE email = ?", email)
 
-        print(id)
+        user = db.execute("SELECT id FROM users WHERE email = ?", email)
+        print(user[0]["id"])
+
+        session["user_id"] = user[0]["id"]
 
         # # TODO Log user in *needs to be updated to index once built
-        # return render_template("login.html")
+        return redirect("/")
 
     else:
         return render_template("signup.html")
