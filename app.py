@@ -57,13 +57,23 @@ def book():
 @login_required
 def bookings():
 
-    # Get all future bookings for all users
-    allBookings = db.execute("SELECT * FROM users JOIN events ON users.id = events.user_id WHERE date > datetime('now') ORDER BY date, start_time")
+    # Determine if user is admin
+    user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
 
-    if len(allBookings) < 1:
-        return render_template("bookings.html")
+    print(user[0]["is_admin"])
 
-    return render_template("bookings.html", bookings=allBookings)
+    if user[0]["is_admin"] == 1:
+
+        # Get all future bookings for all users
+        allBookings = db.execute("SELECT * FROM users JOIN events ON users.id = events.user_id WHERE date > datetime('now') ORDER BY date, start_time")
+
+        if len(allBookings) < 1:
+            return render_template("bookings.html")
+
+        return render_template("bookings.html", bookings=allBookings)
+    
+    else:
+        return apology("You are not authorised to view this page", 403)
 
 
 @app.route("/book/make-booking", methods=["GET", "POST"])
