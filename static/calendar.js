@@ -2,9 +2,9 @@ const calendar = document.getElementById('calendar');
 const title = document.getElementById('month-year');
 const previousMonth = document.getElementById('previous-month');
 const nextMonth = document.getElementById('next-month');
-// const errorModal = document.getElementById('errorModal');
 const errorModal = new bootstrap.Modal('#errorModal');
 const modalTitle = document.getElementById('errorModalLabel');
+const successModal = new bootstrap.Modal('#successModal');
 
 const months = [
     'January',
@@ -131,7 +131,6 @@ function getEvents() {
     fetch(`${window.origin}/book/make-booking`)
     .then(response => response.json())
     .then(data => {
-        console.log(data);
         data.forEach((event) => addEventToDOM(event));
     });
 };
@@ -182,19 +181,29 @@ function createEvent(e) {
     })
     .then((response) => {
         if (response.ok) {
-            return response.json()
+            return response.json();
         }
         return response.json().then(data => {throw new Error(data.message)})
     })
-    .then((data) => { 
-            addEventToDOM(data);
-            location.reload();
+    .then((data) => {
+        addEventToDOM(data);
+        successModal.show();
     })
     .catch((error) => {
         modalTitle.textContent = `${error}`;
         errorModal.show();
     });
 }
+
+
+// Reload page when successful booking modal is closed
+document.getElementById('successOK').addEventListener(
+    "click",
+    function () {
+        location.reload();
+    }
+);
+
 
 function loadCalendar() {
     drawBlankCalendar();
@@ -214,4 +223,6 @@ init();
 // Event listeners
 previousMonth.addEventListener("click", getPreviousMonth);
 nextMonth.addEventListener("click", getNextMonth);
+
+
 

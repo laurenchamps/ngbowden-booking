@@ -44,10 +44,20 @@ def index():
     """Show user's current bookings"""
     myBookings = db.execute("SELECT * FROM events WHERE user_id=? AND date > datetime('now') ORDER BY date, start_time", session["user_id"])
 
+    # Change date format to DD MMM YYYY for displaying on page
+    for booking in myBookings:
+            # Convert date to datetime object
+        date_time = booking["date"] + ' ' + booking["start_time"]
+        date_obj = datetime.strptime(date_time, '%Y-%m-%d %H:%M')
+
+        booking["date"] = date_obj.strftime("%d %b %Y")
+
     # Get user's initial to display in navigation
     user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
     name = user[0]["firstname"]
     initial = name[0]
+
+    # Get admin status of user
     admin = user[0]["is_admin"]
 
     return render_template("index.html", bookings=myBookings, name=initial, admin=admin)
@@ -75,10 +85,22 @@ def bookings():
         # Get all future bookings for all users
         allBookings = db.execute("SELECT * FROM users JOIN events ON users.id = events.user_id WHERE date > datetime('now') ORDER BY date, start_time")
 
+        # Change date format to DD MMM YYYY for displaying on page
+        for booking in allBookings:
+             # Convert date to datetime object
+            date_time = booking["date"] + ' ' + booking["start_time"]
+            date_obj = datetime.strptime(date_time, '%Y-%m-%d %H:%M')
+
+            booking["date"] = date_obj.strftime("%d %b %Y")
+
+        # Get user's initial to display in navigation
+        name = user[0]["firstname"]
+        initial = name[0]
+
         if len(allBookings) < 1:
             return render_template("bookings.html")
 
-        return render_template("bookings.html", bookings=allBookings)
+        return render_template("bookings.html", bookings=allBookings, name=initial)
     
     else:
         return apology("You are not authorised to view this page", 403)
@@ -104,17 +126,18 @@ def make_booking():
         # Query database for an existing booking
         existing_bookings = db.execute("SELECT * FROM events WHERE date = ? AND ((start_time >= ? AND start_time < ?) OR (end_time > ? AND end_time <= ?))", date, start_time, end_time, start_time, end_time)
 
-        # Ensure date and start time is not in the past
+        # Convert date to datetime object
         date_time = date + ' ' + start_time
         date_obj = datetime.strptime(date_time, '%Y-%m-%d %H:%M')
 
+        # Ensure date and start time is not in the past
         if date_obj < datetime.now():
             response = make_response({"message": "Your booking occurs in the past"}, 400)
             return response       
 
         # Return error if there is an existing booking at that time
         if len(existing_bookings) > 0:
-            response = make_response({"message": "The booking time you have selected is unavailable"}, 403)
+            response = make_response({"message": "The booking time you have selected is unavailable"}, 400)
             return response
         
         # Add event to database
