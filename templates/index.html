@@ -40,7 +40,11 @@
                 <td> {{ row.event_name }} </td>
                 <td> {{ row.date }} </td>
                 <td> {{ row.start_time }} - {{ row.end_time }} </td>
-                <td class="text-end">
+                <td class="d-flex justify-content-end">
+                    <form id="userEditForm" action="/edit-booking" method="get" class="me-3">
+                        <input name="id" type="hidden" value="{{ row.id }}">
+                        <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userEditModal">Edit</button>
+                    </form>
                     <form id="userDeleteForm" action="/user-delete" method="post">
                         <input name="id" type="hidden" value="{{ row.id }}">
                         <!-- Button to trigger modal -->
@@ -64,13 +68,6 @@
                                 </div>
                             </div>
                         </div>
-
-                    </form>
-                </td>
-                <td class="text-end">
-                    <form id="userEditForm" action="/edit-booking" method="get">
-                        <input name="id" type="hidden" value="{{ row.id }}">
-                        <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userEditModal">Edit</button>
                     </form>
                 </td>
             </tr>
