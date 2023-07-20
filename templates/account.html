@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    My account
+{% endblock %}
+
+{% include "navigation.html" %}
+
+{% block main %}
+<div class="container">
+    <h1 class="mt-3 mb-5">My account</h1>
+    <div class="account-container">
+    <table class="table">
+        <tbody>
+            {% for item in user %}
+            <tr>
+                <td><strong>Name</strong></td>
+                <td class="text-start">{{ item.firstname }}</td>
+            </tr>
+            <tr>
+                <td><strong>Email</strong></td>
+                <td class="text-start">{{ item.email }}</td>
+            </tr>
+            <tr>
+                <td><strong>Apartment</strong></td>
+                <td class="text-start">{{ item.apartment }}</td>
+            </tr>
+            <tr>
+                <td><strong>Admin access</strong></td>
+                <td class="text-start">
+                    {% if item.is_admin == 1 %}
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
+            </tr>
+            
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+
+{% endblock%}

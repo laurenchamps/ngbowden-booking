@@ -338,6 +338,16 @@ def signup():
 
     else:
         return render_template("signup.html")
+    
+
+@app.route("/account")
+@login_required
+def account():
+    user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
+
+    name = get_user_initial(db)
+
+    return render_template("account.html", user=user, name=name)
 
 
 def errorhandler(e):

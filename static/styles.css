@@ -71,3 +71,7 @@ img {
     background-color: #e89379;
     color: #000;
 }
+
+.account-container {
+    max-width: 50%;
+}
