@@ -35,11 +35,11 @@
             </tr>
         </thead>
         <tbody>
-            {% for row in bookings %}
             <tr>
-                <td> {{ row.event_name }} </td>
-                <td> {{ row.date }} </td>
-                <td> {{ row.start_time }} - {{ row.end_time }} </td>
+            {% for row in bookings %}
+                <td>{{ row.event_name }}</td>
+                <td>{{ row.date }}</td>
+                <td>{{ row.start_time }} - {{ row.end_time }}</td>
                 <td class="d-flex justify-content-end">
                     <form id="userEditForm" action="/edit-booking" method="get" class="me-3">
                         <input name="id" type="hidden" value="{{ row.id }}">
@@ -70,8 +70,13 @@
                         </div>
                     </form>
                 </td>
+            {% else %}
+                <td class="">You do not have any upcoming bookings</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            {% endfor %}
             </tr>
-        {% endfor %}
         </tbody>
     </table>
 </div>
