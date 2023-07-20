@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{% block js %}
+    <script src="../static/calendar.js" defer></script>
+{% endblock %}
+
+{% block calendarcss %} 
+    <link rel="stylesheet" href="../static/calendar-styles.css" class="css">
+{% endblock %}
+
+{% block title %}
+    Edit booking
+{% endblock %}
+
+{% include "navigation.html" %}
+
+{% block main %}
+<div class="container">
+    <h1 class="ms-2 my-3">Edit booking</h1>
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="container px-2 me-5 mt-4">
+            <form class="mb-3" id="editForm" action="/edit-booking" method="post">
+                <div class="form-group mb-3">
+                  <input name="id" type="hidden" value="{% for item in booking %}{{ item.id }}{% endfor %}">
+                    <label for="event-name">Event name</label>
+                    <input type="text" name="event-name" class="form-control" id="event-name" placeholder="Enter event name" value="{% for item in booking %}{{ item.event_name }} {% endfor %}" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="date">Date</label>
+                    <input type="date" name="date" class="form-control" id="date" value="{{ date }}" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="start-time">Start time</label>
+                    <input type="time" name="start-time" class="form-control" id="start-time" value="{{ start_time }}" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="end-time">End time</label>
+                    <input type="time" name="end-time" class="form-control" id="end-time" value="{{ end_time }}" required>
+                </div>
+                <button class="btn btn-dark mb-3" type="submit">Save changes</button>
+            </form>
+        </div>
+
+        <div class="container px-2 mt-3">
+            <div class="d-flex justify-content-between container">
+                <div class="header mb-3">
+                    <h1 id="month-year"></h1>
+                </div>
+                <div class="button-group align-self-center">
+                    <button class="navigation" id="previous-month">&lt;</button>
+                    <button class="navigation" id="next-month">&gt;</button>
+                </div>
+            </div>
+            <div id="calendar"></div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

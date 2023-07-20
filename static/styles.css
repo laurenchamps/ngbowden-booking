@@ -39,3 +39,25 @@ img {
     text-align: center;
     padding-top: 1px;
 }
+
+.btn-primary {
+    background-color: #cce6da;
+    border: none;
+    color: #000;
+}
+
+.btn-primary:hover {
+    background-color: #7ab49a;
+    color: #000;
+}
+
+.btn-danger {
+    background-color: #f1b19d;
+    color: #000;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #e89379;
+    color: #000;
+}

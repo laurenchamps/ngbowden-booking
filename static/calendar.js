@@ -215,7 +215,6 @@ function loadCalendar() {
 
 function init() {
     document.addEventListener('DOMContentLoaded', loadCalendar);
-    document.querySelector('#event-form').addEventListener('submit', createEvent);
 }
 
 init();
@@ -223,6 +222,7 @@ init();
 // Event listeners
 previousMonth.addEventListener("click", getPreviousMonth);
 nextMonth.addEventListener("click", getNextMonth);
+document.querySelector('#event-form').addEventListener('submit', createEvent);
 
 
 

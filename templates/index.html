@@ -67,6 +67,12 @@
 
                     </form>
                 </td>
+                <td class="text-end">
+                    <form id="userEditForm" action="/edit-booking" method="get">
+                        <input name="id" type="hidden" value="{{ row.id }}">
+                        <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userEditModal">Edit</button>
+                    </form>
+                </td>
             </tr>
         {% endfor %}
         </tbody>

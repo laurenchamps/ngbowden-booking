@@ -182,6 +182,64 @@ def user_delete():
     return redirect("/")
 
 
+@app.route("/edit-booking", methods=["GET", "POST"])
+@login_required
+def edit():
+
+    if request.method == "POST":
+
+        new_event_name = request.form.get("event-name")
+        new_date = request.form.get("date")
+        new_start_time = request.form.get("start-time")[:5]
+        new_end_time = request.form.get("end-time")[:5]
+
+        print(new_start_time)
+
+        # Update booking
+        id = request.form.get("id")
+
+        # Query database for an existing booking
+        existing_bookings = db.execute("SELECT * FROM events WHERE date = ? AND ((start_time >= ? AND start_time < ?) OR (end_time > ? AND end_time <= ?))", new_date, new_start_time, new_end_time, new_start_time, new_end_time)
+
+        # Return error if there is an existing booking at that time (that is not itself)
+        if len(existing_bookings) > 0 and str(existing_bookings[0]["id"]) != id:
+            response = make_response({"message": "The booking time you have selected is unavailable"}, 400)
+            return response
+
+        # Return error if any of the form fields are incomplete
+        if not new_event_name or not new_date or not new_start_time or not new_end_time:
+            response = make_response({"message": "Incomplete fields"}, 400)
+            return response
+
+        # Convert date to datetime object
+        date_time = new_date + ' ' + new_start_time + ':00'
+        date_obj = datetime.strptime(date_time, '%Y-%m-%d %H:%M:%S')
+
+        # Ensure date and start time is not in the past
+        if date_obj < datetime.now():
+            response = make_response({"message": "Your booking occurs in the past"}, 400)
+            return response     
+
+        db.execute("UPDATE events SET event_name = ?, date = ?, start_time = ?, end_time = ? WHERE id = ?", new_event_name, new_date, new_start_time, new_end_time, id)
+
+        return redirect("/")
+
+    else:
+        id = request.args.get("id")
+        booking = db.execute("SELECT * FROM events WHERE id = ?", id)
+
+        # Get values, convert to format for adding to template
+        date = booking[0]["date"]
+        start_time = booking[0]["start_time"]
+        start_time = f"{start_time}:00"
+        end_time = booking[0]["end_time"]
+        end_time = f"{end_time}:00"
+
+        print(start_time, end_time)
+
+        return render_template("edit.html", booking=booking, date=date, start_time=start_time, end_time=end_time)
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """Log user in"""
