@@ -43,12 +43,12 @@
                 <td class="d-flex justify-content-end">
                     <form id="userEditForm" action="/edit-booking" method="get" class="me-3">
                         <input name="id" type="hidden" value="{{ row.id }}">
-                        <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userEditModal">Edit</button>
+                        <button type="submit" class="btn btn-green" data-bs-toggle="modal" data-bs-target="#userEditModal">Edit</button>
                     </form>
                     <form id="userDeleteForm" action="/user-delete" method="post">
                         <input name="id" type="hidden" value="{{ row.id }}">
                         <!-- Button to trigger modal -->
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#userDeleteModal">Delete</button>
+                        <button type="button" class="btn btn-red" data-bs-toggle="modal" data-bs-target="#userDeleteModal">Delete</button>
 
                         <!-- Modal -->
                         <div class="modal fade" id="userDeleteModal" tabindex="-1" aria-labelledby="userDeleteModalLabel" aria-hidden="true">
@@ -63,7 +63,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <button type="submit" class="btn btn-primary">Yes, delete event</button>
+                                        <button type="submit" class="btn btn-green">Yes, delete event</button>
                                     </div>
                                 </div>
                             </div>

@@ -36,3 +36,10 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+def get_user_initial(db):
+    user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
+
+    name = user[0]["firstname"]
+    initial = name[0]
+
+    return initial

@@ -10,7 +10,7 @@ from werkzeug.exceptions import default_exceptions, HTTPException, InternalServe
 from werkzeug.security import check_password_hash, generate_password_hash
 import json
 
-from helpers import apology, login_required
+from helpers import apology, login_required, get_user_initial
 
 # Configure application
 app = Flask(__name__)
@@ -53,25 +53,22 @@ def index():
         booking["date"] = date_obj.strftime("%d %b %Y")
 
     # Get user's initial to display in navigation
-    user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
-    name = user[0]["firstname"]
-    initial = name[0]
+    name = get_user_initial(db)
 
     # Get admin status of user
+    user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
     admin = user[0]["is_admin"]
 
-    return render_template("index.html", bookings=myBookings, name=initial, admin=admin)
+    return render_template("index.html", bookings=myBookings, name=name, admin=admin)
 
 
 @app.route("/book")
 @login_required
 def book():
     # Get user's initial to display in navigation
-    user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
-    name = user[0]["firstname"]
-    initial = name[0]
+    name = get_user_initial(db)
 
-    return render_template("book.html", name=initial)
+    return render_template("book.html", name=name)
 
 
 @app.route("/bookings")
@@ -94,13 +91,12 @@ def bookings():
             booking["date"] = date_obj.strftime("%d %b %Y")
 
         # Get user's initial to display in navigation
-        name = user[0]["firstname"]
-        initial = name[0]
+        name = get_user_initial(db)
 
         if len(allBookings) < 1:
             return render_template("bookings.html")
 
-        return render_template("bookings.html", bookings=allBookings, name=initial)
+        return render_template("bookings.html", bookings=allBookings, name=name)
     
     else:
         return apology("You are not authorised to view this page", 403)
@@ -235,9 +231,9 @@ def edit():
         end_time = booking[0]["end_time"]
         end_time = f"{end_time}:00"
 
-        print(start_time, end_time)
+        name = get_user_initial(db)
 
-        return render_template("edit.html", booking=booking, date=date, start_time=start_time, end_time=end_time)
+        return render_template("edit.html", booking=booking, date=date, start_time=start_time, end_time=end_time, name=name)
 
 
 @app.route("/login", methods=["GET", "POST"])

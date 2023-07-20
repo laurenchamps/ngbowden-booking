@@ -40,24 +40,34 @@ img {
     padding-top: 1px;
 }
 
-.btn-primary {
+.btn-green {
     background-color: #cce6da;
     border: none;
     color: #000;
 }
 
-.btn-primary:hover {
+.btn-green:hover {
     background-color: #7ab49a;
     color: #000;
 }
 
-.btn-danger {
+.btn-green:active {
+    background-color: #7ab49a;
+    color: #000;
+}
+
+.btn-red {
     background-color: #f1b19d;
     color: #000;
     border: none;
 }
 
-.btn-danger:hover {
+.btn-red:hover {
+    background-color: #e89379;
+    color: #000;
+}
+
+.btn-red:active {
     background-color: #e89379;
     color: #000;
 }
