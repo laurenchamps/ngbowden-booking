@@ -23,7 +23,7 @@
         {% if admin %}
         <a href="/bookings" class="btn btn-dark me-2">Manage all bookings</a>
         {% endif %}
-        <a href="/book" class="btn btn-dark">Make booking</a>
+        <a href="/book" class="btn btn-dark">Make a booking</a>
     </div>
     <table class="table">
         <thead>
@@ -70,13 +70,15 @@
                         </div>
                     </form>
                 </td>
-            {% else %}
-                <td class="">You do not have any upcoming bookings</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            {% endfor %}
             </tr>
+            {% else %}
+            <tr>
+                <td>You do not have any upcoming bookings</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>
