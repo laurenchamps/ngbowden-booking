@@ -160,18 +160,6 @@ function addEventToDOM(event) {
 }
 
 
-// function removeEventFromDOM(id) {
-//     const events = document.querySelectorAll('.event');
-
-//     for (item in events) {
-//         if (item.dataset.id === id) {
-//             item.remove();
-//             console.log("Item removed");
-//         }
-//     }
-// }
-
-
 function createEvent(e) {
     // Prevent default form behaviour
     e.preventDefault();
@@ -206,42 +194,6 @@ function createEvent(e) {
         errorModal.show();
     });
 }
-
-// function editEvent(e) {
-//     // Prevent default form behaviour
-//     e.preventDefault();
-
-//     const updatedEvent = {
-//         new_event_name: document.getElementById('event-name').value,
-//         new_date: document.getElementById('date').value,
-//         new_start_time: document.getElementById('start-time').value,
-//         new_end_time: document.getElementById('end-time').value,
-//     }
-
-//     // Post new event details to server
-//     fetch('http://127.0.0.1:5000/book/edit-booking', {
-//         method: "POST",
-//         body: JSON.stringify(updatedEvent),
-//         headers: {
-//             "Content-Type": "application/json"
-//         }
-//     })
-//     .then((response) => {
-//         if (response.ok) {
-//             return response.json();
-//         }
-//         return response.json().then(data => {throw new Error(data.message)})
-//     })
-//     .then((data) => {
-//         console.log(data);
-//         addEventToDOM(data);
-//         successModal.show();
-//     })
-//     .catch((error) => {
-//         modalTitle.textContent = `${error}`;
-//         errorModal.show();
-//     });
-// }
 
 
 // Reload page when successful booking modal is closed
