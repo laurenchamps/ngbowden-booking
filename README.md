@@ -1,5 +1,5 @@
 # Nightingale Bowden booking system
-#### Video Demo:  <URL HERE>
+#### Video Demo:  https://youtu.be/6H7RhHVe6g4
 #### Description:
 The Nightingale Bowden booking system is my final project for CS50X. I live in a new apartment building which has a communal rooftop garden and barbeque area available for all residents. Up until now, we have used an adhoc method of reserving the space by posting on our Slack channel. Someone might post 'Hey folks, I'm having some friends round on Saturday night and planning to head up to the roof after dinner. I hope this doesn't clash with anyone else's plans?'. There is no way to view if someone is planning to use the roof on a particular date without trawling through the channel for messages, so it's not a very good system. This web application is designed to solve this problem, by creating a booking system for residents. Residents can create an account and log in to view existing bookings, make a booking, and edit or delete their own upcoming bookings. Additionally, admin functionality is provided to enable specific users (e.g. the management committee) to view, edit or delete bookings made by all users.
 
