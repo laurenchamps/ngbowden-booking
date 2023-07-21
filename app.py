@@ -1,6 +1,3 @@
-""" Does this only relate to API from finance pset? So may not be required for my app 
-import os """
-
 from cs50 import SQL
 from datetime import datetime, date
 from flask import Flask, flash, redirect, render_template, request, session, jsonify, make_response
@@ -41,12 +38,12 @@ db = SQL("sqlite:///ngbowden.db")
 @app.route("/")
 @login_required
 def index():
-    """Show user's current bookings"""
+    """Get user's current bookings"""
     myBookings = db.execute("SELECT * FROM events WHERE user_id=? AND date > datetime('now') ORDER BY date, start_time", session["user_id"])
 
     # Change date format to DD MMM YYYY for displaying on page
     for booking in myBookings:
-            # Convert date to datetime object
+        # Convert date to datetime object
         date_time = booking["date"] + ' ' + booking["start_time"]
         date_obj = datetime.strptime(date_time, '%Y-%m-%d %H:%M')
 
@@ -149,6 +146,7 @@ def make_booking():
         return response
     
     else:
+        # If GET request, send details of all existing bookings to populate calendar
         events = db.execute("SELECT events.id, event_name, date, start_time, end_time, firstname, apartment FROM events JOIN users ON users.id = events.user_id ORDER BY start_time")
 
         response = make_response(jsonify(events), 200)
@@ -189,9 +187,6 @@ def edit():
         new_start_time = request.form.get("start-time")[:5]
         new_end_time = request.form.get("end-time")[:5]
 
-        print(new_start_time)
-
-        # Update booking
         id = request.form.get("id")
 
         # Query database for an existing booking
@@ -216,6 +211,7 @@ def edit():
             response = make_response({"message": "Your booking occurs in the past"}, 400)
             return response     
 
+        # Update booking
         db.execute("UPDATE events SET event_name = ?, date = ?, start_time = ?, end_time = ? WHERE id = ?", new_event_name, new_date, new_start_time, new_end_time, id)
 
         return redirect("/")
@@ -224,13 +220,14 @@ def edit():
         id = request.args.get("id")
         booking = db.execute("SELECT * FROM events WHERE id = ?", id)
 
-        # Get values, convert to format for adding to template
+        # Get values of existing event, convert to required format to pre-populate booking fields for editing
         date = booking[0]["date"]
         start_time = booking[0]["start_time"]
         start_time = f"{start_time}:00"
         end_time = booking[0]["end_time"]
         end_time = f"{end_time}:00"
 
+        # Get user initial for displaying in navbar
         name = get_user_initial(db)
 
         return render_template("edit.html", booking=booking, date=date, start_time=start_time, end_time=end_time, name=name)
@@ -328,12 +325,12 @@ def signup():
             generate_password_hash(password),
         )
 
+        # Log user in and redirect to homepage
         user = db.execute("SELECT id FROM users WHERE email = ?", email)
         print(user[0]["id"])
 
         session["user_id"] = user[0]["id"]
 
-        # # TODO Log user in *needs to be updated to index once built
         return redirect("/")
 
     else:
@@ -343,8 +340,10 @@ def signup():
 @app.route("/account")
 @login_required
 def account():
+    # Get user details
     user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
 
+    #  Get user initial to display in navbar
     name = get_user_initial(db)
 
     return render_template("account.html", user=user, name=name)
