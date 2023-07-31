@@ -27,6 +27,10 @@ const today = new Date();
 let currentMonth = today.getMonth();
 let currentYear = today.getFullYear();
 
+function init() {
+    document.addEventListener("DOMContentLoaded", loadCalendar);
+}
+
 
 function drawBlankCalendar() {
     // Create header row with each day of week
@@ -91,7 +95,7 @@ function updateCalendar(month, year) {
         events.forEach((event) => {
             event.remove();
         })
-        
+
         // Add each day of month to calendar
         if (i >= firstDayOfMonth && dayCounter <= daysInMonth) {
             let formattedCounter = String(dayCounter).padStart(2, '0');
@@ -100,7 +104,7 @@ function updateCalendar(month, year) {
             day.setAttribute("id", fullYear);
             dayCounter++;
         }
-    } 
+    }
 }
 
 function getPreviousMonth() {
@@ -112,7 +116,7 @@ function getPreviousMonth() {
     }
 
     updateCalendar(currentMonth, currentYear);
-    getEvents();
+    getEvents(currentMonth);
 }
 
 function getNextMonth() {
@@ -124,14 +128,19 @@ function getNextMonth() {
     }
 
     updateCalendar(currentMonth, currentYear);
-    getEvents();
+    getEvents(currentMonth);
 }
 
-function getEvents() {
-    fetch(`${window.origin}/book/make-booking`)
+function getEvents(month) {
+    fetch(`http://127.0.0.1:5000/book/make-booking`)
     .then(response => response.json())
     .then(data => {
-        data.forEach((event) => addEventToDOM(event));
+        data.forEach((event) => {
+            // if month of event matches month displayed, add event to DOM
+            if (String(month + 1).padStart(2, 0) === event.date.substring(5, 7)) {
+                addEventToDOM(event);
+            }
+        });
     });
 };
 
@@ -140,16 +149,16 @@ function addEventToDOM(event) {
     const myEvent = document.createElement('div');
     myEvent.classList.add('event');
     myEvent.setAttribute('data-id', event.id);
-    
+
     const myP1 = document.createElement('p');
     const myP2 = document.createElement('p');
-    
+
     myP1.textContent = event.event_name;
     myP2.textContent = `${event.start_time} - ${event.end_time}`;
-    
+
     myEvent.appendChild(myP1);
     myEvent.appendChild(myP2);
-    
+
     // For each day element if it has an id matching the event date, add event to calendar
     const dayElements = document.querySelectorAll('.day');
     for (let i = 0; i < dayElements.length; i++) {
@@ -206,16 +215,14 @@ document.getElementById('successOK').addEventListener(
 
 
 function loadCalendar() {
+    console.log("DOM content loaded");
     drawBlankCalendar();
     // Default load to current month
     const today = new Date();
     updateCalendar(today.getMonth(), today.getFullYear());
-    getEvents();
+    getEvents(today.getMonth());
 }
 
-function init() {
-    document.addEventListener('DOMContentLoaded', loadCalendar);
-}
 
 init();
 
@@ -223,6 +230,3 @@ init();
 previousMonth.addEventListener("click", getPreviousMonth);
 nextMonth.addEventListener("click", getNextMonth);
 document.querySelector('#event-form').addEventListener('submit', createEvent);
-
-
-
