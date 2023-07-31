@@ -132,7 +132,7 @@ function getNextMonth() {
 }
 
 function getEvents(month) {
-    fetch(`http://127.0.0.1:5000/book/make-booking`)
+    fetch(`/book/make-booking`)
     .then(response => response.json())
     .then(data => {
         data.forEach((event) => {
@@ -181,7 +181,7 @@ function createEvent(e) {
     }
 
     // Post new event details to server
-    fetch('http://127.0.0.1:5000/book/make-booking', {
+    fetch('/book/make-booking', {
         method: "POST",
         body: JSON.stringify(newEvent),
         headers: {
