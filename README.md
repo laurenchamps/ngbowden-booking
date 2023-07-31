@@ -1,6 +1,6 @@
 # Nightingale Bowden booking system
 
-A full stack web application I submitted as the final project for [CS50X](https://www.edx.org/course/introduction-computer-science-harvardx-cs50x).
+A full stack web application I submitted as my final project for [CS50X](https://www.edx.org/course/introduction-computer-science-harvardx-cs50x).
 
 [Live demo](https://youtu.be/6H7RhHVe6g4) :point_left:
 
