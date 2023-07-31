@@ -2,7 +2,7 @@
 
 A full stack web application I submitted as my final project for [CS50X](https://www.edx.org/course/introduction-computer-science-harvardx-cs50x).
 
-[Live demo](https://youtu.be/6H7RhHVe6g4) :point_left:
+[Video demo](https://youtu.be/6H7RhHVe6g4) :point_left:
 
 <img src="/docs/screenshots/home.png" width="40%" style="display:inline">     <img src="/docs/screenshots/make-a-booking.png" width="40%" style="display:inline">
 
