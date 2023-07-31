@@ -31,7 +31,7 @@ I live in a new apartment building which has a communal rooftop garden and barbe
 - Edit bookings
 - Delete bookings
 
-**Events**
+**Bookings**
 - View existing bookings
 - Make a booking
 - Edit a booking
