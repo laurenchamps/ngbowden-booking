@@ -37,3 +37,6 @@ I live in a new apartment building which has a communal rooftop garden and barbe
 - Edit a booking
 - Delete a booking
 
+## Run notes
+To run the application use the command `flask run` from within the directory containing app.py
+
